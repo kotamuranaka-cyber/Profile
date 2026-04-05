@@ -1,0 +1,17 @@
+
+body {
+    font-family: Roboto;
+    color:rgba(0, 0, 0, 0.75);
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-container {
+    padding: 0px 40px 0px 40px;
+    background-color: rgba(27, 86, 120, 1);
+}
+
