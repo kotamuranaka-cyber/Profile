@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/register.css">
 </head>
 <body>
@@ -17,26 +18,26 @@
         <h2>新規登録</h2>
         <form th:action="@{/register}" th:object="${userModel}" method="post" class="register-form">
             <div class="form-group">
-                <label for="name">氏名</label>
+                <label for="name" class="form-label">氏名</label>
                 <input type="text" th:field="*{name}">
                 <p th:errors="*{name}" class="error-message"></p>
             </div>
             <div class="form-group">
-                <label for="email">メールアドレス</label>
+                <label for="email" class="form-label">メールアドレス</label>
                 <input type="text" th:field="*{email}">
                 <p th:errors="*{email}" class="error-message"></p>
             </div>
             <div class="form-group">
-                <label for="password">パスワード</label>
+                <label for="password" class="form-label">パスワード</label>
                 <input type="password" th:field="*{password}">
                 <p th:errors="*{password}" class="error-message"></p>
             </div>
-            <button type="submit" class="btn register-btn">登録</button>
+            <button type="submit" class="btn register-btn">登録する</button>
         </form>
     </main>
     <footer>
         <div class="footer-container">
-            <p>portfolio site</p>
+            <p class="footer-text">portfolio site</p>
         </div>
     </footer>
 </body>

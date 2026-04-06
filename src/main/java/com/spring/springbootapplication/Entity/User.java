@@ -25,9 +25,9 @@ public class User {
 @Column
 private long id;
 
-@Column(length = 100, nullable = false)
+@Column(length = 255, nullable = false)
 @NotBlank(message = "氏名は必ず入力してください")
-@Size(max = 100, message = "氏名は100文字以内で入力してください")
+@Size(max = 255, message = "氏名は255文字以内で入力してください")
 private String name;
 
 @Column(length = 100, nullable = false)
@@ -37,7 +37,7 @@ private String email;
 
 @Column(length = 255, nullable = false)
 @NotBlank(message = "パスワードは必ず入力してください")
-@Pattern(regexp="^(?=.*[A-Z])[a-zA-Z0-9_]{8,24}+$", message = "英数字8文字以上で入力してください")
+@Pattern(regexp="^[a-zA-Z0-9]{8,}$", message = "英数字8文字以上で入力してください")
 private String password;
 
 @Column(length = 255, nullable = true)

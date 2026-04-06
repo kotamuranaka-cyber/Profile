@@ -1,17 +1,106 @@
-
 body {
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
     color:rgba(0, 0, 0, 0.75);
 }
 
-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.btn:hover {
+    opacity: 0.8;
 }
 
-.header-container {
-    padding: 0px 40px 0px 40px;
+header{
+    width: 100%;
+    height: 120px;
     background-color: rgba(27, 86, 120, 1);
 }
 
+.header-container {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px 40px;
+    align-items: center;
+}
+
+.header-container .logo {
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.login-btn {
+    background-color: white;
+    border-radius: 4px;
+    padding: 16px 40px;
+    border: none;
+}
+
+footer {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(27, 86, 120, 1);
+    position: fixed;
+    bottom: 0;
+}
+
+.footer-container {
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    height: 100%;
+    padding: 0px 40px;
+}
+
+.footer-text {
+    color: white;
+    font-size: 18px;
+    margin: auto;
+}
+
+.main-container {
+    width: 480px;
+    margin: 0 auto;
+}
+
+.main-container h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    font-weight: 400;
+}
+
+
+.form-group {
+    margin-bottom: 48px;
+}
+
+.form-group input {
+    border: none;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 8px 0px;
+    font-size: 16px;
+    outline: none;
+}
+
+.form-label {
+    font-size: 10px;
+
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.register-btn {
+    background-color: rgba(27, 86, 120, 1);
+    font-weight: 400;
+    color: white;
+    padding: 16px 80px;
+    border-radius: 4px;
+    font-size: 18px;
+    border: none;
+    display: block;
+    margin: 0 auto;
+}
