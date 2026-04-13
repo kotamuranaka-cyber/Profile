@@ -70,3 +70,8 @@ http://localhost:8080/
 
 下記画像のように「Whitelabel Error Page」が表示されていれば、環境構築完了です。
 ![スクリーンショット 2024-04-22 23.13.29.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3744277/29986c70-eaf3-31b1-6b4d-6ae98390f38f.png)
+
+VSC右上の停止ボタン(赤い四角)を押す
+./gradlew bootRunを実行したターミナルで Ctrl + C
+ファイルの変更を保存
+再度./gradlew bootRunを実行
