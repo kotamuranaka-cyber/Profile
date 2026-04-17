@@ -69,7 +69,7 @@ public class SpringController {
     @GetMapping(value = "/login", params = "error") // ログイン失敗時のURL
     public String loginError(RedirectAttributes redirectAttributes) {
         //ログイン失敗時のflashメッセージ
-        redirectAttributes.addFlashAttribute("errorMessage", "メールアドレス、もしくはパスワードが間違っています。");
+        redirectAttributes.addFlashAttribute("errorMessage", "メールアドレス、もしくはパスワードが間違っています");
         //もとのログインページに遷移
         return "redirect:/login";
     }
