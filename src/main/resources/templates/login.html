@@ -5,40 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/register.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <header>
         <div class="header-container">
             <h1 class="logo">My Portfolio</h1>
-            <a class="btn login-btn" th:href="@{/login}">ログイン</a>
         </div>
     </header>
+
+    <!--flashメッセージ-->
+    <div th:if="${errorMessage}" class="alert alert-warning" role="alert">
+        <strong th:text="${errorMessage}"></strong>
+    </div>
+
     <main class="main-container">
-        <h2>新規登録</h2>
-        <form th:action="@{/register}" th:object="${userModel}" method="post" class="register-form">
-            <div class="form-group">
-                <label for="name" class="form-label">氏名</label>
-                <input type="text" th:field="*{name}">
-                <p th:errors="*{name}" class="error-message"></p>
-            </div>
+        <h2>ログイン</h2>
+        <form th:action="@{/login}" method="post" class="register-form">
             <div class="form-group">
                 <label for="email" class="form-label">メールアドレス</label>
-                <input type="text" th:field="*{email}">
-                <p th:errors="*{email}" class="error-message"></p>
+                <input type="text" name="email">
             </div>
             <div class="form-group">
                 <label for="password" class="form-label">パスワード</label>
-                <input type="password" th:field="*{password}">
-                <p th:errors="*{password}" class="error-message"></p>
+                <input type="password" name="password">
             </div>
-            <button type="submit" class="btn register-btn">登録する</button>
+            <button type="submit" class="btn login-btn">ログインする</button>
+            <a th:href="@{/register}" class="btn register-btn">新規登録する</a>
         </form>
     </main>
     <footer>
         <div class="footer-container">
             <p class="footer-text">portfolio site</p>
         </div>
-    </footer>
+    </footer>    
 </body>
 </html>
