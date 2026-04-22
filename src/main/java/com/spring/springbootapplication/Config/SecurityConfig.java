@@ -36,8 +36,13 @@ public class SecurityConfig {
                 // アクセス権
                 .permitAll()
 
-            );
+            )
 
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+            );
         return http.build();
     }
 
