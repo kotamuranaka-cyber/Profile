@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="/css/register.css">
-    <style>
-        body {
+body {
     font-family: 'Roboto', sans-serif;
     color:rgba(0, 0, 0, 0.75);
 }
@@ -67,24 +59,3 @@ footer {
     padding: 16px 40px;
     border: none;
 }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-container">
-            <h1 class="logo">My Portfolio</h1>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn logout-btn">ログアウト</button>
-            </form>
-        </div>
-    </header>
-    <main class="main-container">
-        <h2>トップページです。</h2>
-    </main>
-    <footer>
-        <div class="footer-container">
-            <p class="footer-text">portfolio site</p>
-        </div>
-    </footer>
-</body>
-</html>
