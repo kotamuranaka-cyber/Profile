@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 body {
     font-family: 'Roboto', sans-serif;
     color:rgba(0, 0, 0, 0.75);
@@ -49,8 +51,10 @@ footer {
 }
 
 .main-container {
-    width: 480px;
+    width: 1440px;
     margin: 0 auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 .logout-btn {
@@ -58,4 +62,92 @@ footer {
     border-radius: 4px;
     padding: 16px 40px;
     border: none;
+}
+
+.wrapper-content {
+    margin: 0 auto;
+    width: 960px;
+    flex-wrap: wrap;
+    display: flexbox;
+}
+
+.content {
+    display: flex;
+    margin: 0 auto;
+    gap: 40px;
+}
+
+.content-left {
+    text-align: center;
+}
+
+.avatar-container {
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background-color: #e0e0e057;
+}
+
+.avatar {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.user-name {
+    text-align: center;
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+
+}
+
+.content-right {
+    flex: 1;
+    width: 520px;
+}
+
+.introduction-title {
+    width: 240px;
+    text-align: left;
+    font-size: 36px;
+    font-weight: 700;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.introduction {
+    width: 520px;
+
+}
+
+.wrapper-chart {
+    text-align: center;
+}
+
+.wrapper-chart h2 {
+    width: 400px;
+    margin: 0 auto;
+    font-weight: 700;
+    font-size: 36px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.editprofile-btn {
+    width: fit-content;
+    background-color: rgba(27, 86, 120, 1);
+    font-weight: 400;
+    color: white;
+    padding: 16px 40px;
+    border-radius: 4px;
+    font-size: 18px;
+    border: none;
+    display: inline-block;
+    margin-top: 25px;
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
 }
