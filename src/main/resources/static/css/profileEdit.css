@@ -99,18 +99,12 @@ footer {
 }
 
 .form-label {
-    font-size: 10px;
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
 }
 
 .form-introduction {
     margin-bottom: 40px;
-}
-
-.helper-text {
-    font-size: 12px;
-    letter-spacing: 0.4px;
-    color: rgba(0, 0, 0, 0.54);
 }
 
 .form-avatar > .form-label {

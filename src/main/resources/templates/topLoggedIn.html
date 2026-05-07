@@ -20,7 +20,7 @@
             <div class="content">
                 <div class="content-left">
                     <div class="avatar-container">
-                        <img class="avatar" th:src="'data:image/jpeg;base64,' + ${avatarBase64}" alt="アバター画像">
+                        <img class="avatar" th:if="${avatarBase64}" th:src="'data:image/jpeg;base64,' + ${avatarBase64}" alt="アバター画像">
                     </div>
                         <p class="user-name" th:text="${user.name}"></p>
                 </div>

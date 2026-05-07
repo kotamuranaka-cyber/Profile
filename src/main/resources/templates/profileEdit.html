@@ -26,7 +26,6 @@
             <div class="form-group form-introduction">
                 <label for="introduction" class="form-label">自己紹介文</label>
                 <textarea id="introduction" name="introduction" th:text="${user.introduction}" class="introduction-textarea"></textarea>
-                <p class="helper-text">50文字以上、200文字以内で入力してください</p>
                 <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
             </div>
 
@@ -35,9 +34,9 @@
                 <!-- accept="image/*" で画像ファイルしか選べないようにする -->
                 <input type="file" id="avatarImage" name="avatarImage" class="file-input" accept="image/*">
                 <!-- 本物のファイル添付ボタンを、CSSが適応可能な偽ボタンで覆う -->   
-                <label for="avatarImage" class="custom-file-button">画像を添付する</label>
+                <label for="avatarImage" class="custom-file-button">画像ファイルを添付する</label>
                 
-                <!-- 【要件】ファイル名を表示する場所 -->
+                <!-- ファイル名を表示する場所 -->
                 <span id="fileNameDisplay" class="file-name"></span>
             </div>
 
