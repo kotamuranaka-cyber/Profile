@@ -62,6 +62,13 @@ footer {
     margin: 0 auto;
 }
 
+.logout-btn {
+    background-color: white;
+    border-radius: 4px;
+    padding: 16px 40px;
+    border: none;
+}
+
 .main-container h2 {
     text-align: center;
     font-size: 36px;
@@ -70,14 +77,21 @@ footer {
     font-weight: 400;
 }
 
-
-.form-group {
-    margin-bottom: 48px;
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
 }
 
-.form-group input {
-    border: none;
+.form-group {
     width: 100%;
+}
+
+.form-group textarea {
+    border: none;
+    width: 480px;
+    height: 90px;
+    resize: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     padding: 8px 0px;
     font-size: 16px;
@@ -85,16 +99,34 @@ footer {
 }
 
 .form-label {
-    font-size: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
 }
 
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 4px;
+.form-introduction {
+    margin-bottom: 40px;
 }
 
-.register-btn {
+.form-avatar > .form-label {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.file-input {
+    display: none;
+}
+
+.custom-file-button {
+    width: fit-content;
+    display: inline-block;
+    padding: 8px 24px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.editprofile-btn {
     background-color: rgba(27, 86, 120, 1);
     font-weight: 400;
     color: white;
@@ -103,10 +135,7 @@ footer {
     font-size: 18px;
     border: none;
     display: block;
-    margin: 0 auto;
-}
-
-a.btn {
-    display: inline-block;
-    text-decoration: none;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }

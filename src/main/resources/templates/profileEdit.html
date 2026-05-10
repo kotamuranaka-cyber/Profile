@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profileEdit.css">
+</head>
+<body>
+     <header>
+        <div class="header-container">
+            <h1 class="logo">My Portfolio</h1>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn logout-btn">ログアウト</button>
+            </form>
+        </div>
+    </header>   
+    <main class="main-container">
+        <h2 class="edit-title">自己紹介を編集する</h2>
+
+        <!-- 画像を送るために、enctype="multipart/form-data" を必ず記述する -->
+        <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
+
+
+            <div class="form-group form-introduction">
+                <label for="introduction" class="form-label">自己紹介文</label>
+                <textarea id="introduction" name="introduction" th:text="${user.introduction}" class="introduction-textarea"></textarea>
+                <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
+            </div>
+
+            <div class="form-group form-avatar">
+                <label class="form-label">アバター画像</label>
+                <!-- accept="image/*" で画像ファイルしか選べないようにする -->
+                <input type="file" id="avatarImage" name="avatarImage" class="file-input" accept="image/*">
+                <!-- 本物のファイル添付ボタンを、CSSが適応可能な偽ボタンで覆う -->   
+                <label for="avatarImage" class="custom-file-button">画像ファイルを添付する</label>
+                
+                <!-- ファイル名を表示する場所 -->
+                <span id="fileNameDisplay" class="file-name"></span>
+            </div>
+
+            <button type="submit" class="btn editprofile-btn submit-btn">自己紹介を確定する</button>
+        </form>
+    </main>
+
+    <!-- ファイル名を表示するためのJavaScript -->
+    <script>
+        // input要素（ファイル選択）を取得
+        const fileInput = document.getElementById('avatarImage');
+        // ファイル名を表示するspan要素を取得
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        // ファイルが選択（変更）されたら発動するイベント
+        fileInput.addEventListener('change', function(event) {
+            // ファイルが1つでも選択されていれば
+            if (event.target.files.length > 0) {
+                // そのファイルの名前を取得して表示
+                fileNameDisplay.textContent = event.target.files[0].name;
+            } else {
+                // キャンセルされたら空に戻す
+                fileNameDisplay.textContent = '';
+            }
+        });
+    </script>
+    <footer>
+        <div class="footer-container">
+            <p class="footer-text">portfolio site</p>
+        </div>
+    </footer>
+</body>
+</html>

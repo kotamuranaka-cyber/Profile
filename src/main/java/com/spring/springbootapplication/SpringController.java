@@ -1,13 +1,21 @@
 package com.spring.springbootapplication;
 
 
+import java.io.IOException;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.springbootapplication.Entity.User;
@@ -56,8 +64,20 @@ public class SpringController {
         return "redirect:/topLoggedIn"; // 登録ができたらトップページへ
     }
 
+    @Transactional
     @GetMapping("/topLoggedIn") // ログインしたあとのhtmlを表示
-    public String showTopLoggedInPage() {
+    public String showTopLoggedInPage(Model model, @AuthenticationPrincipal UserDetails userDetails/* @AuthenticationPrincipalは、認証済みのユーザー情報を簡単に取得できるアノテーション */) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null); //データベースから、ログイン中のユーザーのアドレスで検索する
+
+        // 画像データをBase64に変換して、HTMLで使える形にする
+        if (user != null && user.getAvatarImage() != null) {
+            // バイト配列をBase64文字列に変換
+            String base64Image = Base64.getEncoder().encodeToString(user.getAvatarImage());
+            // モデルに変換した画像データを渡す
+            model.addAttribute("avatarBase64", base64Image);
+        }
+
+        model.addAttribute("user", user);
         return "topLoggedIn"; 
     }
 
@@ -82,4 +102,34 @@ public class SpringController {
         }
     SecurityConfig側でPOSTリクエストを処理するのでここにPOSTMappingは書かなくてよい
     }*/
+
+    @Transactional
+    @GetMapping("/profile/edit")
+    public String showEditProfilePage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+        model.addAttribute("user", user);
+        return "profileEdit";
+    }
+
+    @Transactional
+    @PostMapping("/profile/edit")
+    public String editProfile(@AuthenticationPrincipal UserDetails userDetails, 
+        @RequestParam("introduction") String introduction, 
+        @RequestParam("avatarImage") MultipartFile avatarImage, 
+        Model model) throws IOException {
+        
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+        if (introduction == null || introduction.length() < 50 || introduction.length() > 200) {
+            model.addAttribute("errorMessage", "自己紹介は50文字以上200文字以下で入力してください");
+            model.addAttribute("user", user);
+            return "profileEdit";
+        }
+        user.setIntroduction(introduction);
+
+        if(avatarImage != null && !avatarImage.isEmpty()) {
+            user.setAvatarImage(avatarImage.getBytes());
+        }
+        userRepository.saveAndFlush(user);
+        return "redirect:/topLoggedIn";
+    }
 }

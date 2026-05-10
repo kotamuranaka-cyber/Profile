@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+/* import jakarta.persistence.Lob; */
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -43,7 +44,7 @@ private String password;
 @Column(length = 255, nullable = true)
 private String introduction;
 
-@Column(name = "avatar_image", length = 255, nullable = true)
-private String avatarImage;
+@Column(name = "avatar_image", nullable = true, columnDefinition = "bytea")
+private byte[] avatarImage; // Stringをバイト配列に変換
 
 }
