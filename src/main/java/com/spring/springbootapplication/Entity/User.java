@@ -18,7 +18,8 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name="users")
 @Data
-public class User {
+@EqualsAndHashCode(callSuper = false)
+public class User extends BaseTimeEntity {
 
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)

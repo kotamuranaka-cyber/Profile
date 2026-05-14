@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="/css/skillEdit.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1 class="logo">My Portfolio</h1>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn logout-btn">ログアウト</button>
+            </form>
+        </div>
+    </header>
+    <main class="main-container">
+    <div class="wrapper">
+        <div class="month-pulldown-container">
+            <select id="monthPulldown" class="month-pulldown">
+                <option th:each= "month:${monthList}" th:value="${month}" th:text="${#temporals.format(month, 'M月')}"
+                        th:selected= "${month.equals(displayMonth)}">
+                </option>
+            </select>
+        </div>
+        <div th:each= "category:${categories}" class="category-container">
+            <div class="category-top">
+                <h2 class="category-title" th:text="${category.name}"></h2>
+                <button type="button" class="btn add-btn">項目を追加する</button>
+            </div>
+            <table class="skill-table">
+                <thead>
+                    <tr>
+                        <th class="col-subject">項目名</th>
+                        <th class="col-time">学習時間</th>
+                        <th class="col-save"></th>
+                        <th class="col-delete"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each= "data:${learningDataList}" th:if= "${data.category.id == category.id}">
+                        <td th:text="${data.subject}"></td>
+                        <td>
+                            <input type="number" th:value="${data.studyTime}" min="0" step="1">
+                        </td>
+                        <td>
+                            <button type="button" class="btn save-btn">学習時間を保存する</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn delete-btn">削除する</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </main>
+    <footer>
+        <div class="footer-container">
+            <p class="footer-text">portfolio site</p>
+        </div>
+    </footer>
+    <script>
+        const monthPulldown = document.getElementById('monthPulldown');
+        monthPulldown.addEventListener('change', function() {
+            // 選択された日付を取得
+            const selectedMonth = this.value;
+            // URLパラメータに月を付与してリロード
+            window.location.href = '/skill/edit?month=' + selectedMonth;
+        });
+    </script>
+</body>
+</html>
