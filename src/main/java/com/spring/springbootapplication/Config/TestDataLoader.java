@@ -77,6 +77,13 @@ public class TestDataLoader {
                 mysql.setStudyMonth(may);
                 learningDataRepository.save(mysql);
 
+                LearningData python = new LearningData();
+                python.setUser(user);
+                python.setCategory(backend);
+                python.setSubject("Python");
+                python.setStudyTime(40);
+                python.setStudyMonth(may);
+                learningDataRepository.save(python);
 
                 LearningData html = new LearningData();
                 html.setUser(user);

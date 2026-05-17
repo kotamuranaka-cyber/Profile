@@ -29,30 +29,32 @@
                 <h2 class="category-title" th:text="${category.name}"></h2>
                 <button type="button" class="btn add-btn">項目を追加する</button>
             </div>
-            <table class="skill-table">
-                <thead>
-                    <tr>
-                        <th class="col-subject">項目名</th>
-                        <th class="col-time">学習時間</th>
-                        <th class="col-save"></th>
-                        <th class="col-delete"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each= "data:${learningDataList}" th:if= "${data.category.id == category.id}">
-                        <td th:text="${data.subject}"></td>
-                        <td>
-                            <input type="number" th:value="${data.studyTime}" min="0" step="1">
-                        </td>
-                        <td>
-                            <button type="button" class="btn save-btn">学習時間を保存する</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn delete-btn">削除する</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-scroll-wrapper">
+                <table class="skill-table">
+                    <thead>
+                        <tr>
+                            <th class="col-subject">項目名</th>
+                            <th class="col-time">学習時間</th>
+                            <th class="col-save"></th>
+                            <th class="col-delete"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each= "data:${learningDataList}" th:if= "${data.category.id == category.id}">
+                            <td th:text="${data.subject}"></td>
+                            <td>
+                                <input type="number" th:value="${data.studyTime}" min="1" step="1">
+                            </td>
+                            <td>
+                                <button type="button" class="btn save-btn">学習時間を保存する</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn delete-btn">削除する</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     </main>
