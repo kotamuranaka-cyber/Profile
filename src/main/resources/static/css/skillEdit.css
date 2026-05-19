@@ -125,19 +125,19 @@ footer {
 
 .table-scroll-wrapper {
     max-height: 282px;
-    overflow-y: auto;
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.12), 0px 2px 2px 0px rgba(0, 0, 0, 0.14);
     border-radius: 4px;
+    overflow-y: auto;
 }
 
 .skill-table {
     width: 100%;
     border-spacing: 0;
+    border-collapse: separate;
 }
 
 .skill-table th, .skill-table td {
     padding: 16px;
-    vertical-align: middle;
 }
 
 .skill-table th {
@@ -146,6 +146,7 @@ footer {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.87);
     border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     background-color: white;

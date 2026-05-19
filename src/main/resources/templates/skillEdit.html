@@ -7,30 +7,54 @@
     <link rel="stylesheet" href="/css/skillEdit.css">
 </head>
 <body>
+
+
     <header>
+
+
         <div class="header-container">
+
             <h1 class="logo">My Portfolio</h1>
+
             <form th:action="@{/logout}" method="post">
+
                 <button type="submit" class="btn logout-btn">ログアウト</button>
+
             </form>
         </div>
+
+
     </header>
+
+
     <main class="main-container">
+
+
     <div class="wrapper">
+
         <div class="month-pulldown-container">
+
             <select id="monthPulldown" class="month-pulldown">
                 <option th:each= "month:${monthList}" th:value="${month}" th:text="${#temporals.format(month, 'M月')}"
                         th:selected= "${month.equals(displayMonth)}">
                 </option>
             </select>
+
         </div>
+
+
         <div th:each= "category:${categories}" class="category-container">
+
             <div class="category-top">
                 <h2 class="category-title" th:text="${category.name}"></h2>
                 <button type="button" class="btn add-btn">項目を追加する</button>
             </div>
+
             <div class="table-scroll-wrapper">
+
+
                 <table class="skill-table">
+
                     <thead>
                         <tr>
                             <th class="col-subject">項目名</th>
@@ -39,6 +63,7 @@
                             <th class="col-delete"></th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr th:each= "data:${learningDataList}" th:if= "${data.category.id == category.id}">
                             <td th:text="${data.subject}"></td>
@@ -53,6 +78,7 @@
                             </td>
                         </tr>
                     </tbody>
+                    
                 </table>
             </div>
         </div>
