@@ -2,7 +2,10 @@ package com.spring.springbootapplication;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.springbootapplication.Entity.Category;
+import com.spring.springbootapplication.Entity.LearningData;
 import com.spring.springbootapplication.Entity.User;
+import com.spring.springbootapplication.Repository.CategoryRepository;
+import com.spring.springbootapplication.Repository.LearningDataRepository;
 import com.spring.springbootapplication.Repository.UserRepository;
 import com.spring.springbootapplication.Config.SecurityConfig;
 
@@ -31,6 +38,12 @@ public class SpringController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private LearningDataRepository learningDataRepository;
 
     @Autowired
     private SecurityConfig securityConfig;
@@ -103,6 +116,7 @@ public class SpringController {
     SecurityConfig側でPOSTリクエストを処理するのでここにPOSTMappingは書かなくてよい
     }*/
 
+    //自己紹介編集ページGET
     @Transactional
     @GetMapping("/profile/edit")
     public String showEditProfilePage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -111,6 +125,7 @@ public class SpringController {
         return "profileEdit";
     }
 
+    //自己紹介編集ページPOST
     @Transactional
     @PostMapping("/profile/edit")
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails, 
@@ -132,4 +147,43 @@ public class SpringController {
         userRepository.saveAndFlush(user);
         return "redirect:/topLoggedIn";
     }
+
+    //学習時間一覧ページ
+    @GetMapping("/skill/edit")
+    public String showSkillEditPage(@RequestParam (name = "month", required = false) String monthString, 
+        @AuthenticationPrincipal UserDetails userDetails, Model model ) {
+            LocalDate displayMonth; //表示する月を宣言
+
+            if (monthString != null && !monthString.isEmpty()) {
+                displayMonth = LocalDate.parse(monthString); 
+            } else {
+                displayMonth = LocalDate.now(); //もしパラメータが無い場合は当月を表示
+            }
+
+            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
+            List<LocalDate> monthList = new ArrayList<>();
+            for (int i = 0 ; i < 3 ; i ++ ) {
+                monthList.add(LocalDate.now().minusMonths(i));
+            }
+
+            //User情報を取得
+            User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+
+            //カテゴリー一覧を取得
+            List<Category> categories = categoryRepository.findAll();
+
+            //取得したユーザーと表示する月をもとに学習データを取得
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonth(user, displayMonth);
+
+            model.addAttribute("categories", categories);
+            model.addAttribute("monthList", monthList);
+            model.addAttribute("displayMonth", displayMonth);
+            model.addAttribute("user", user);
+            model.addAttribute("learningDataList", learningDataList);
+
+
+        return "skillEdit";
+    }
+    
+
 }
