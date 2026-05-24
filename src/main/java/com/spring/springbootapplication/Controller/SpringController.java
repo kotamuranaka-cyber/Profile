@@ -1,4 +1,4 @@
-package com.spring.springbootapplication;
+package com.spring.springbootapplication.Controller;
 
 
 import java.io.IOException;
@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.spring.springbootapplication.Entity.Category;
 import com.spring.springbootapplication.Entity.LearningData;
 import com.spring.springbootapplication.Entity.User;
+import com.spring.springbootapplication.Form.LearningDataForm;
 import com.spring.springbootapplication.Repository.CategoryRepository;
 import com.spring.springbootapplication.Repository.LearningDataRepository;
 import com.spring.springbootapplication.Repository.UserRepository;
@@ -185,5 +186,81 @@ public class SpringController {
         return "skillEdit";
     }
     
+    //学習項目および学習時間追加ページ
+    @GetMapping("/skill/add")
+    public String showNewSkillPage (@RequestParam("categoryId") Long categoryId, @RequestParam("month") String monthString, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+
+            //画面にカテゴリー名を表示するために、渡されたIDからカテゴリーを取得する。
+            Category category = categoryRepository.findById(categoryId).orElse(null);
+
+
+            //            
+            LearningDataForm form = new LearningDataForm();
+            form.setCategoryId(categoryId);
+            form.setStudyMonth(monthString);
+
+
+            //HTMLにデータを渡す
+            model.addAttribute("category", category);
+            model.addAttribute("learningDataForm", form);   // th:object="${learningDataForm}"でフォームのデータを受け取るためのオブジェクト
+        
+
+            return "skillNew";
+
+    }
+
+    //学習項目および学習時間追加処理
+    @PostMapping("/skill/add")
+    public String addNewSkill(@ModelAttribute("learningDataForm") @Valid LearningDataForm form, BindingResult result, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+
+
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+        Category category = categoryRepository.findById(form.getCategoryId()).orElse(null);
+
+        // フォームから渡された月の文字列をLocalDate型に変換する
+        LocalDate studyMonth = LocalDate.parse(form.getStudyMonth());
+
+        model.addAttribute("category", category);
+
+
+
+        //------------------エラーチェック部分-----------------
+        //バリデーションに引っかかった場合は同じページに返される
+        if (result.hasErrors()) {
+
+            return "skillNew";
+
+        }
+
+        //リポジトリの重複確認メソッドを呼び出す
+        boolean isDuplicate = learningDataRepository.existsByUserAndCategoryAndStudyMonthAndSubject(user, category, studyMonth, form.getSubject());
+
+        //重複チェック。ユーザー、カテゴリ、月、科目が同じデータがすでに存在する場合はエラーを表示する        
+        if (isDuplicate) {
+
+            model.addAttribute("errorMessage", form.getSubject() + "は既に登録されています");
+            return "skillNew";
+
+        }
+        //------------------エラーチェック部分終了---------------
+
+        //エラーが存在しなければ、DBに保存する。
+        LearningData data = new LearningData();
+        data.setUser(user);
+        data.setCategory(category);
+        data.setStudyMonth(studyMonth);
+        data.setSubject(form.getSubject()); // 入力された項目名
+        data.setStudyTime(form.getStudyTime()); // 入力された学習時間
+
+
+        learningDataRepository.saveAndFlush(data);
+
+        //モーダルを表示するため、成功フラグをモデルに渡す(リダイレクトしてしまうとモーダル表示せずにページが遷移してしまう。)
+        model.addAttribute("isSuccess", true);
+
+        return "skillNew";
+    
+    }
+
 
 }

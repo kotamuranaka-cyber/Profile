@@ -46,8 +46,12 @@
         <div th:each= "category:${categories}" class="category-container">
 
             <div class="category-top">
+                
                 <h2 class="category-title" th:text="${category.name}"></h2>
-                <button type="button" class="btn add-btn">項目を追加する</button>
+                <a th:href="@{/skill/add(categoryId=${category.id}, month=${displayMonth})}"  class="btn add-btn"  style="text-decoration: none; text-align: center; display: inline-block; box-sizing: border-box;">
+                    項目を追加する
+                </a>
+
             </div>
 
             <div class="table-scroll-wrapper">
