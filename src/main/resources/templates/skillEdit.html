@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="/css/skillEdit.css">
+    <link rel="stylesheet" href="/css/skillNew.css"> 
 </head>
 <body>
 
@@ -71,11 +72,19 @@
                     <tbody>
                         <tr th:each= "data:${learningDataList}" th:if= "${data.category.id == category.id}">
                             <td th:text="${data.subject}"></td>
+
                             <td>
-                                <input type="number" th:value="${data.studyTime}" min="1" step="1">
+                                <input type="number" name="studyTime" th:value="${data.studyTime}" th:form="|saveForm-${data.id}|" min="0" step="1">
                             </td>
+
                             <td>
-                                <button type="button" class="btn save-btn">学習時間を保存する</button>
+
+                                <form th:id="|saveForm-${data.id}|" th:action="@{/skill/update}" method="post">
+                                    <input type="hidden" name="learningDataId" th:value="${data.id}">
+                                    <input type="hidden" name="month" th:value="${displayMonth}">
+                                    <button type="submit" class="btn save-btn">学習時間を保存する</button>
+                                </form>
+
                             </td>
                             <td>
                                 <button type="button" class="btn delete-btn">削除する</button>
@@ -87,6 +96,23 @@
             </div>
         </div>
     </div>
+
+    <!-- モーダル表示はControllerからisSuccessのtrueを受け取ったときだけ画面に表示するようにする -->
+
+    <div class="modal-overlay" th:if="${isUpdateSuccess}">
+
+        <div class="modal-window">
+
+            <p class="modal-message">
+                <span th:text="${saveSubject}"></span> の学習時間を保存しました！
+            </p>
+
+            <a th:href="@{/skill/edit(month=${displayMonth})}" class="btn modal-btn">編集ページに戻る</a>
+
+        </div>
+
+    </div>
+
     </main>
     <footer>
         <div class="footer-container">
