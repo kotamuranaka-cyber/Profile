@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/skillNew.css">
+</head>
+<body>
+
+
+     <header>
+        <div class="header-container">
+            <h1 class="logo">My Portfolio</h1>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn logout-btn">ログアウト</button>
+            </form>
+        </div>
+    </header>
+
+
+    <!-- 重複があるときのエラーメッセージ -->
+    <div th:if="${errorMessage}" class="alert alert-warning" role="alert">
+        <strong th:text="${errorMessage}"></strong>
+    </div>
+
+
+    <main class="main-container">
+
+
+        <h2 class="edit-title" th:text="${category.name} + 'に項目を追加'"></h2>
+
+        
+        <form th:action="@{/skill/add}" th:object="${learningDataForm}" method="post" class="add-skill-form">
+
+        <!-- カテゴリIDと月の情報はユーザーから入力させず、URLのクエリパラメータからhiddenで受け取る -->
+            <input type="hidden" th:field="*{categoryId}">
+            <input type="hidden" th:field="*{studyMonth}">
+
+
+            <div class="form-group form-subject">
+
+                <label for="subject" class="form-label">項目名</label>
+                <input type="text" id="subject" name="subject" th:field="*{subject}" class="form-input">
+                <p th:errors="*{subject}" class="error-message"></p>
+
+            </div>
+
+            <div class="form-group form-studyTime">
+
+                <label for="studyTime" class="form-label">学習時間</label>
+                <input type="number" id="studyTime" name="studyTime" th:field="*{studyTime}" class="form-input">
+                <p class="helper-text">分単位で入力してください</p>
+                <p th:errors="*{studyTime}" class="error-message"></p>
+
+            </div>
+
+            <button type="submit" class="btn add-new-skill-btn submit-btn">追加する</button>
+
+
+        </form>
+
+
+        <!-- モーダル表示はControllerからisSuccessのtrueを受け取ったときだけ画面に表示するようにする -->
+
+        <div class="modal-overlay" th:if="${isSuccess}">
+
+            <div class="modal-window">
+                <p class="modal-message">
+                    <span th:text="${category.name}"></span> に <span th:text="${learningDataForm.subject}"></span> を<br>
+                    <span th:text="${learningDataForm.studyTime}"></span>分で追加しました！
+                </p>
+                <a th:href="@{/skill/edit(month=${learningDataForm.studyMonth})}" class="btn modal-btn">編集ページに戻る</a>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+    </script>
+
+
+    <footer>
+        <div class="footer-container">
+            <p class="footer-text">portfolio site</p>
+        </div>
+    </footer>  
+
+
+</body>
+</html>

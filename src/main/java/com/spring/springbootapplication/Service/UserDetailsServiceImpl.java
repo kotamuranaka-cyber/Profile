@@ -1,4 +1,4 @@
-package com.spring.springbootapplication;
+package com.spring.springbootapplication.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
