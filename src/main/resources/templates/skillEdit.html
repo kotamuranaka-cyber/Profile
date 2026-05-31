@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="/css/skillEdit.css">
-    <link rel="stylesheet" href="/css/skillNew.css"> 
 </head>
 <body>
 
@@ -99,7 +98,7 @@
 
     <!-- モーダル表示はControllerからisSuccessのtrueを受け取ったときだけ画面に表示するようにする -->
 
-    <div class="modal-overlay" th:if="${isUpdateSuccess}">
+    <div class="modal-overlay" th:if="${isSuccess}">
 
         <div class="modal-window">
 
