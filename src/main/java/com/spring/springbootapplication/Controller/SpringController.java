@@ -173,8 +173,8 @@ public class SpringController {
             //カテゴリー一覧を取得
             List<Category> categories = categoryRepository.findAll();
 
-            //取得したユーザーと表示する月をもとに学習データを取得
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonth(user, displayMonth);
+            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);
@@ -314,8 +314,8 @@ public class SpringController {
             //カテゴリー一覧を取得
             List<Category> categories = categoryRepository.findAll();
 
-            //取得したユーザーと表示する月をもとに学習データを取得
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonth(user, studyMonth);
+            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);

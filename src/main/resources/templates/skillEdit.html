@@ -81,12 +81,12 @@
                                 <form th:id="|saveForm-${data.id}|" th:action="@{/skill/update}" method="post">
                                     <input type="hidden" name="learningDataId" th:value="${data.id}">
                                     <input type="hidden" name="month" th:value="${displayMonth}">
-                                    <button type="submit" class="btn save-btn">学習時間を保存する</button>
+                                    <button type="submit" class="btn save-btn" id="modify_btn">学習時間を保存する</button>
                                 </form>
 
                             </td>
                             <td>
-                                <button type="button" class="btn delete-btn">削除する</button>
+                                <button type="button" class="btn delete-btn" id="delete_btn">削除する</button>
                             </td>
                         </tr>
                     </tbody>
@@ -119,6 +119,7 @@
         </div>
     </footer>
     <script>
+
         const monthPulldown = document.getElementById('monthPulldown');
         monthPulldown.addEventListener('change', function() {
             // 選択された日付を取得
@@ -126,6 +127,32 @@
             // URLパラメータに月を付与してリロード
             window.location.href = '/skill/edit?month=' + selectedMonth;
         });
+
+        //学習時間を保存するボタンがクリックされたときの処理
+        document.addEventListener('click', event => {
+            //クリックされた要素が学習時間を保存するボタン(modify_btn)か、モーダル内のボタン(modal-btn)だった場合
+            if (event.target.id === 'modify_btn'|| event.target.classList.contains('modal-btn')) {
+            //スクロール位置取得
+            var location = window.pageYOffset;
+            // sessionStorageに保存する
+            sessionStorage.setItem('OffsetTop', location);
+            }
+        });
+
+        // ページが読み込まれたときにスクロール位置を復元する
+        window.addEventListener('load', loadFinished);
+        // スクロール位置を復元する関数
+        function loadFinished() {
+            var OffsetTop = sessionStorage.getItem("OffsetTop");
+            window.scroll({
+                top: OffsetTop,
+                behavior: 'instant'
+            });
+
+            // sessionStorage削除
+            sessionStorage.removeItem("OffsetTop");
+        }
+
     </script>
 </body>
 </html>
