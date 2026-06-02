@@ -173,8 +173,8 @@ public class SpringController {
             //カテゴリー一覧を取得
             List<Category> categories = categoryRepository.findAll();
 
-            //取得したユーザーと表示する月をもとに学習データを取得
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonth(user, displayMonth);
+            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);
@@ -262,5 +262,69 @@ public class SpringController {
     
     }
 
+    //変更保存ボタン押下後のPOST処理
+    @Transactional
+    @PostMapping("/skill/update")
+    public String updateStudyTime(@RequestParam("learningDataId") Long learningDataId, @RequestParam("studyTime") Integer studyTime, @RequestParam("month") String monthString, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+
+        //User情報を取得、表示する月を決める、どの学習データを更新するかを決める
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+
+        LocalDate studyMonth = LocalDate.parse(monthString);
+
+        LearningData data = learningDataRepository.findById(learningDataId).orElse(null);
+
+        //------------------エラーチェック部分-----------------
+        //バリデーションに引っかかった場合は同じページに返される
+
+        // データが存在しない、または現在のユーザーのデータでない場合はエラー
+        if (data == null || data.getUser().getId() != user.getId()) {
+
+
+            return "redirect:/skill/edit?month=" + monthString; // エラーがあった場合は元のページにリダイレクト
+
+        }
+
+        // 学習時間が負の数の場合はエラー
+        if (studyTime == null || studyTime < 0) {
+
+            return "redirect:/skill/edit?month=" + monthString; // エラーがあった場合は元のページにリダイレクト
+
+        }
+        //------------------エラーチェック部分終了---------------
+
+        //エラーが存在しなければ、DBに保存する。
+        data.setStudyTime(studyTime);
+        learningDataRepository.saveAndFlush(data);
+
+        //モーダル表示のための成功フラグと更新する項目名
+        model.addAttribute("isSuccess", true); // 更新成功のフラグをモデルに追加
+        model.addAttribute("saveSubject", data.getSubject()); // 更新した項目名をモデルに追加
+
+
+        //skillEdit.htmlの表示に必要なデータを再度モデルに渡す。
+
+
+            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
+            List<LocalDate> monthList = new ArrayList<>();
+            for (int i = 0 ; i < 3 ; i ++ ) {
+                monthList.add(LocalDate.now().minusMonths(i));
+            }
+
+            //カテゴリー一覧を取得
+            List<Category> categories = categoryRepository.findAll();
+
+            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
+
+            model.addAttribute("categories", categories);
+            model.addAttribute("monthList", monthList);
+            model.addAttribute("displayMonth", studyMonth);
+            model.addAttribute("user", user);
+            model.addAttribute("learningDataList", learningDataList);
+
+        return "skillEdit";
+
+    }
 
 }
