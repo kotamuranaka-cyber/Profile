@@ -50,7 +50,7 @@ public class TestDataLoader {
             Category infra = categories.stream().filter(c -> c.getName().equals("インフラ")).findFirst().orElse(null);
 
 
-            LocalDate may = LocalDate.now().withMonth(5);
+            LocalDate june = LocalDate.now().withMonth(6);
 
 
                 LearningData ruby = new LearningData();
@@ -58,7 +58,7 @@ public class TestDataLoader {
                 ruby.setCategory(backend);
                 ruby.setSubject("Ruby");
                 ruby.setStudyTime(40);
-                ruby.setStudyMonth(may);
+                ruby.setStudyMonth(june);
                 learningDataRepository.save(ruby);
 
                 LearningData rails = new LearningData();
@@ -66,7 +66,7 @@ public class TestDataLoader {
                 rails.setCategory(backend);
                 rails.setSubject("Rails");
                 rails.setStudyTime(40);
-                rails.setStudyMonth(may);
+                rails.setStudyMonth(june);
                 learningDataRepository.save(rails);
 
                 LearningData mysql = new LearningData();
@@ -74,7 +74,7 @@ public class TestDataLoader {
                 mysql.setCategory(backend);
                 mysql.setSubject("MySQL");
                 mysql.setStudyTime(40);
-                mysql.setStudyMonth(may);
+                mysql.setStudyMonth(june);
                 learningDataRepository.save(mysql);
 
                 LearningData python = new LearningData();
@@ -82,7 +82,7 @@ public class TestDataLoader {
                 python.setCategory(backend);
                 python.setSubject("Python");
                 python.setStudyTime(40);
-                python.setStudyMonth(may);
+                python.setStudyMonth(june);
                 learningDataRepository.save(python);
 
                 LearningData html = new LearningData();
@@ -90,7 +90,7 @@ public class TestDataLoader {
                 html.setCategory(frontend);
                 html.setSubject("HTML");
                 html.setStudyTime(40);
-                html.setStudyMonth(may);
+                html.setStudyMonth(june);
                 learningDataRepository.save(html);
 
                 LearningData css = new LearningData();
@@ -98,7 +98,7 @@ public class TestDataLoader {
                 css.setCategory(frontend);
                 css.setSubject("CSS");
                 css.setStudyTime(40);
-                css.setStudyMonth(may);
+                css.setStudyMonth(june);
                 learningDataRepository.save(css);
 
 
@@ -107,7 +107,7 @@ public class TestDataLoader {
                 heroku.setCategory(infra);
                 heroku.setSubject("Heroku");
                 heroku.setStudyTime(40);
-                heroku.setStudyMonth(may);
+                heroku.setStudyMonth(june);
                 learningDataRepository.save(heroku);
 
                 LearningData aws = new LearningData();
@@ -115,7 +115,7 @@ public class TestDataLoader {
                 aws.setCategory(infra);
                 aws.setSubject("AWS");
                 aws.setStudyTime(40);
-                aws.setStudyMonth(may);
+                aws.setStudyMonth(june);
                 learningDataRepository.save(aws);
 
                 LearningData firebase = new LearningData();
@@ -123,7 +123,7 @@ public class TestDataLoader {
                 firebase.setCategory(infra);
                 firebase.setSubject("Firebase");
                 firebase.setStudyTime(40);
-                firebase.setStudyMonth(may);
+                firebase.setStudyMonth(june);
                 learningDataRepository.save(firebase);
 
         };
