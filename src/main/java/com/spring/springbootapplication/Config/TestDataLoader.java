@@ -50,7 +50,7 @@ public class TestDataLoader {
             Category infra = categories.stream().filter(c -> c.getName().equals("インフラ")).findFirst().orElse(null);
 
 
-            LocalDate june = LocalDate.now().withMonth(6);
+            LocalDate june = LocalDate.now().withMonth(6).withDayOfMonth(1);
 
 
                 LearningData ruby = new LearningData();

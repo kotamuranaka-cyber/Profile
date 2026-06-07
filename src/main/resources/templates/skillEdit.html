@@ -35,7 +35,7 @@
         <div class="month-pulldown-container">
 
             <select id="monthPulldown" class="month-pulldown">
-                <option th:each= "month:${monthList}" th:value="${month}" th:text="${#temporals.format(month, 'M月')}"
+                <option th:each= "month:${monthList}" th:value="${month}" th:text="${format(month, 'M月')}"
                         th:selected= "${month.equals(displayMonth)}">
                 </option>
             </select>

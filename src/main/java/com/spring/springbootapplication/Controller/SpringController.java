@@ -3,6 +3,8 @@ package com.spring.springbootapplication.Controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -153,18 +155,31 @@ public class SpringController {
     @GetMapping("/skill/edit")
     public String showSkillEditPage(@RequestParam (name = "month", required = false) String monthString, 
         @AuthenticationPrincipal UserDetails userDetails, Model model ) {
+
             LocalDate displayMonth; //表示する月を宣言
 
+            //URLに表示する日付を"yyyy-MM"のフォーマットに変換する。
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+            //日にちを1日に固定するのは、DBから学習データを取得する際に、月単位で検索するため。DBには"yyyy-MM-01"の形で保存されている。
             if (monthString != null && !monthString.isEmpty()) {
-                displayMonth = LocalDate.parse(monthString); 
+
+                displayMonth = YearMonth.parse(monthString, formatter).atDay(1); //パラメータがある場合はその月を表示
+
             } else {
-                displayMonth = LocalDate.now(); //もしパラメータが無い場合は当月を表示
+
+                displayMonth = LocalDate.now().withDayOfMonth(1); //もしパラメータが無い場合は当月を表示
+                
             }
 
             //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
+            List<String> monthList = new ArrayList<>();
+
             for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
+
+                //フォーマットを"yyyy-MM"にしてリストに追加
+                monthList.add(LocalDate.now().minusMonths(i).format(formatter)); 
+
             }
 
             //User情報を取得
@@ -178,7 +193,7 @@ public class SpringController {
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", displayMonth);
+            model.addAttribute("displayMonth", displayMonth.format(formatter)); //displayMonthを"yyyy-MM"のStringに変換してHTMLに渡す
             model.addAttribute("user", user);
             model.addAttribute("learningDataList", learningDataList);
 
