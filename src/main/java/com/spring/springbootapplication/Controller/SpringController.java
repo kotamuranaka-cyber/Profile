@@ -99,7 +99,58 @@ public class SpringController {
         }
 
         model.addAttribute("user", user);
-        
+
+        /* チャート部分に各カテゴリの学習時間の合計を渡すための動作部分 */
+
+        //バックエンド、フロントエンド、インフラの学習時間の合計を格納するリストを用意
+        List<Integer> backendData = new ArrayList<>();
+        List<Integer> frontendData = new ArrayList<>();
+        List<Integer> infraData = new ArrayList<>();
+
+        //先々月、先月、今月の順番で表示するために、ループで3ヶ月分のデータを取得する
+        for (int i = 2; i >= 0; i--) {
+
+            LocalDate month = LocalDate.now().minusMonths(i).withDayOfMonth(1);
+
+            //ユーザーと月をもとに学習データを取得する
+            List<LearningData> monthlyData = learningDataRepository.findByUserAndStudyMonth(user, month);
+
+            //合計値を格納する変数を用意しておく
+            int backendSum = 0;
+            int frontendSum = 0;
+            int infraSum = 0;
+
+            //ループで学習データを1件ずつ見ていき、カテゴリごとに学習時間を合計していく
+            for (LearningData data : monthlyData) {
+
+                if ("バックエンド".equals(data.getCategory().getName())) {
+
+                    backendSum += data.getStudyTime();
+
+                } else if ("フロントエンド".equals(data.getCategory().getName())) {
+
+                    frontendSum += data.getStudyTime();
+
+                } else if ("インフラ".equals(data.getCategory().getName())) {
+
+                    infraSum += data.getStudyTime();
+
+                }
+
+            }
+
+            //ループを抜けたら、各カテゴリの合計をリストに追加する。これを3ヶ月分繰り返す。
+            backendData.add(backendSum);
+            frontendData.add(frontendSum);
+            infraData.add(infraSum);
+
+        }
+
+            //HTMLに各
+            model.addAttribute("backendData", backendData);
+            model.addAttribute("frontendData", frontendData);
+            model.addAttribute("infraData", infraData);
+
         return "topLoggedIn"; 
     }
 
