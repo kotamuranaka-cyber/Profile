@@ -86,7 +86,13 @@
 
                             </td>
                             <td>
-                                <button type="button" class="btn delete-btn" id="delete_btn">削除する</button>
+
+                                <form th:action="@{/skill/delete}" method="post">
+                                    <input type="hidden" name="learningDataId" th:value="${data.id}">
+                                    <input type="hidden" name="month" th:value="${displayMonth}">
+                                    <button type="submit" class="btn delete-btn" id="modify_btn">削除する</button>
+                                </form>
+
                             </td>
                         </tr>
                     </tbody>
@@ -104,6 +110,22 @@
 
             <p class="modal-message">
                 <span th:text="${saveSubject}"></span> の学習時間を保存しました！
+            </p>
+
+            <a th:href="@{/skill/edit(month=${displayMonth})}" class="btn modal-btn">編集ページに戻る</a>
+
+        </div>
+
+
+    <!-- モーダル表示はControllerからisDeleteSuccessのtrueを受け取ったときだけ画面に表示するようにする -->
+    </div>
+
+        <div class="modal-overlay" th:if="${isDeleteSuccess}">
+
+        <div class="modal-window">
+
+            <p class="modal-message">
+                <span th:text="${deletedSubject}"></span> を削除しました！
             </p>
 
             <a th:href="@{/skill/edit(month=${displayMonth})}" class="btn modal-btn">編集ページに戻る</a>
