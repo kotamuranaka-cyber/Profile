@@ -39,7 +39,7 @@
                 <!-- 月選択のプルダウン -->
                 <option th:each= "month:${monthList}"
                         th:value="${month}"
-                        th:text="${#strings.substring(month, 5, 7) + '月'}"
+                        th:text="${#numbers.formatInteger(#strings.substring(month, 5, 7), 1)} + '月'"
                         th:selected= "${month == displayMonth}">
                 </option>
 

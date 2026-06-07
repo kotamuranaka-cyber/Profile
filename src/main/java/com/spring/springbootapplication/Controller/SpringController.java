@@ -181,7 +181,7 @@ public class SpringController {
 
 
         return "skillEdit";
-        
+
     }
     
     //学習項目および学習時間追加ページ
@@ -215,8 +215,8 @@ public class SpringController {
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
         Category category = categoryRepository.findById(form.getCategoryId()).orElse(null);
 
-        // フォームから渡された月の文字列をLocalDate型に変換する
-        LocalDate studyMonth = LocalDate.parse(form.getStudyMonth());
+        // フォームから渡された月の文字列をLocalDate型に変換する。その際、yyyy-MMの形式で渡されるので、末尾に"-01"をつけてDBに保存されている形式と合わせる。
+        LocalDate studyMonth = LocalDate.parse(form.getStudyMonth() + "-01");
 
         model.addAttribute("category", category);
 
@@ -268,7 +268,7 @@ public class SpringController {
         //User情報を取得、表示する月を決める、どの学習データを更新するかを決める
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-        LocalDate studyMonth = LocalDate.parse(monthString);
+        LocalDate studyMonth = LocalDate.parse(monthString + "-01");
 
         LearningData data = learningDataRepository.findById(learningDataId).orElse(null);
 
@@ -315,7 +315,7 @@ public class SpringController {
         //User情報を取得、表示されている月を決める、どの学習データを削除するかを決める
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-        LocalDate studyMonth = LocalDate.parse(monthString);
+        LocalDate studyMonth = LocalDate.parse(monthString + "-01");
 
         LearningData data = learningDataRepository.findById(learningDataId).orElse(null);
 
