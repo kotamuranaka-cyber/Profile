@@ -83,17 +83,23 @@ public class SpringController {
     @Transactional
     @GetMapping("/topLoggedIn") // ログインしたあとのhtmlを表示
     public String showTopLoggedInPage(Model model, @AuthenticationPrincipal UserDetails userDetails/* @AuthenticationPrincipalは、認証済みのユーザー情報を簡単に取得できるアノテーション */) {
-        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null); //データベースから、ログイン中のユーザーのアドレスで検索する
+
+        //データベースから、ログイン中のユーザーのアドレスで検索する
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null); 
 
         // 画像データをBase64に変換して、HTMLで使える形にする
         if (user != null && user.getAvatarImage() != null) {
+
             // バイト配列をBase64文字列に変換
             String base64Image = Base64.getEncoder().encodeToString(user.getAvatarImage());
+
             // モデルに変換した画像データを渡す
             model.addAttribute("avatarBase64", base64Image);
+
         }
 
         model.addAttribute("user", user);
+        
         return "topLoggedIn"; 
     }
 
