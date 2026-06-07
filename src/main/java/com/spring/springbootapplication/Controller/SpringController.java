@@ -172,33 +172,16 @@ public class SpringController {
                 
             }
 
-            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<String> monthList = new ArrayList<>();
-
-            for (int i = 0 ; i < 3 ; i ++ ) {
-
-                //フォーマットを"yyyy-MM"にしてリストに追加
-                monthList.add(LocalDate.now().minusMonths(i).format(formatter)); 
-
-            }
 
             //User情報を取得
             User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-            //カテゴリー一覧を取得
-            List<Category> categories = categoryRepository.findAll();
-
-            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
-
-            model.addAttribute("categories", categories);
-            model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", displayMonth.format(formatter)); //displayMonthを"yyyy-MM"のStringに変換してHTMLに渡す
-            model.addAttribute("user", user);
-            model.addAttribute("learningDataList", learningDataList);
+            //skillEdit.htmlに渡すモデルの属性をセットする共通メソッド
+            setSkillEditModelAttributes(model, user, displayMonth);
 
 
         return "skillEdit";
+        
     }
     
     //学習項目および学習時間追加ページ
@@ -318,25 +301,7 @@ public class SpringController {
 
 
         //skillEdit.htmlの表示に必要なデータを再度モデルに渡す。
-
-
-            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
-            for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
-            }
-
-            //カテゴリー一覧を取得
-            List<Category> categories = categoryRepository.findAll();
-
-            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
-
-            model.addAttribute("categories", categories);
-            model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", studyMonth);
-            model.addAttribute("user", user);
-            model.addAttribute("learningDataList", learningDataList);
+        setSkillEditModelAttributes(model, user, studyMonth);
 
         return "skillEdit";
 
@@ -376,28 +341,39 @@ public class SpringController {
 
 
         //skillEdit.htmlの表示に必要なデータを再度モデルに渡す。
+        setSkillEditModelAttributes(model, user, studyMonth);
 
+        return "skillEdit";
+
+    }
+
+
+    // skillEditに渡すモデルの属性をセットする共通メソッド(GETとPOSTで重複する処理をまとめる)
+    private void setSkillEditModelAttributes(Model model, User user, LocalDate displayMonth) {
 
             //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
+            List<String> monthList = new ArrayList<>();
+
             for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
+
+                //フォーマットを"yyyy-MM"にしてリストに追加
+                monthList.add(LocalDate.now().minusMonths(i).format(DateTimeFormatter.ofPattern("yyyy-MM"))); 
+
             }
 
             //カテゴリー一覧を取得
             List<Category> categories = categoryRepository.findAll();
 
             //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", studyMonth);
+            model.addAttribute("displayMonth", displayMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"))); //displayMonthを"yyyy-MM"のStringに変換してHTMLに渡す
             model.addAttribute("user", user);
             model.addAttribute("learningDataList", learningDataList);
 
-        return "skillEdit";
-
     }
+
 
 }
