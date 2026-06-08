@@ -36,6 +36,11 @@
         <div class="wrapper-chart">
             <h2>学習チャート</h2>
             <a th:href= "@{/skill/edit}" class="btn editskill-btn">編集する</a>
+            <div class="chart-container">
+
+                <canvas id="chart"></canvas>
+
+            </div>
         </div>
     </main>
     <footer>
@@ -43,5 +48,19 @@
             <p class="footer-text">portfolio site</p>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js">
+
+        let ctx = document.getElementById('chart');
+        let chart = {
+            type: 'bar',
+            data: {
+                labels: ['先々月', '先月', '今月'],
+                datasets: []
+        }
+
+    };
+    
+    </script>
 </body>
 </html>

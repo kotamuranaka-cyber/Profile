@@ -3,6 +3,8 @@ package com.spring.springbootapplication.Controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -153,37 +155,33 @@ public class SpringController {
     @GetMapping("/skill/edit")
     public String showSkillEditPage(@RequestParam (name = "month", required = false) String monthString, 
         @AuthenticationPrincipal UserDetails userDetails, Model model ) {
+
             LocalDate displayMonth; //表示する月を宣言
 
+            //URLに表示する日付を"yyyy-MM"のフォーマットに変換する。
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+            //日にちを1日に固定するのは、DBから学習データを取得する際に、月単位で検索するため。DBには"yyyy-MM-01"の形で保存されている。
             if (monthString != null && !monthString.isEmpty()) {
-                displayMonth = LocalDate.parse(monthString); 
+
+                displayMonth = YearMonth.parse(monthString, formatter).atDay(1); //パラメータがある場合はその月を表示
+
             } else {
-                displayMonth = LocalDate.now(); //もしパラメータが無い場合は当月を表示
+
+                displayMonth = LocalDate.now().withDayOfMonth(1); //もしパラメータが無い場合は当月を表示
+                
             }
 
-            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
-            for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
-            }
 
             //User情報を取得
             User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-            //カテゴリー一覧を取得
-            List<Category> categories = categoryRepository.findAll();
-
-            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
-
-            model.addAttribute("categories", categories);
-            model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", displayMonth);
-            model.addAttribute("user", user);
-            model.addAttribute("learningDataList", learningDataList);
+            //skillEdit.htmlに渡すモデルの属性をセットする共通メソッド
+            setSkillEditModelAttributes(model, user, displayMonth);
 
 
         return "skillEdit";
+
     }
     
     //学習項目および学習時間追加ページ
@@ -217,8 +215,8 @@ public class SpringController {
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
         Category category = categoryRepository.findById(form.getCategoryId()).orElse(null);
 
-        // フォームから渡された月の文字列をLocalDate型に変換する
-        LocalDate studyMonth = LocalDate.parse(form.getStudyMonth());
+        // フォームから渡された月の文字列をLocalDate型に変換する。その際、yyyy-MMの形式で渡されるので、末尾に"-01"をつけてDBに保存されている形式と合わせる。
+        LocalDate studyMonth = LocalDate.parse(form.getStudyMonth() + "-01");
 
         model.addAttribute("category", category);
 
@@ -270,7 +268,7 @@ public class SpringController {
         //User情報を取得、表示する月を決める、どの学習データを更新するかを決める
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-        LocalDate studyMonth = LocalDate.parse(monthString);
+        LocalDate studyMonth = LocalDate.parse(monthString + "-01");
 
         LearningData data = learningDataRepository.findById(learningDataId).orElse(null);
 
@@ -303,25 +301,7 @@ public class SpringController {
 
 
         //skillEdit.htmlの表示に必要なデータを再度モデルに渡す。
-
-
-            //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
-            for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
-            }
-
-            //カテゴリー一覧を取得
-            List<Category> categories = categoryRepository.findAll();
-
-            //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
-
-            model.addAttribute("categories", categories);
-            model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", studyMonth);
-            model.addAttribute("user", user);
-            model.addAttribute("learningDataList", learningDataList);
+        setSkillEditModelAttributes(model, user, studyMonth);
 
         return "skillEdit";
 
@@ -335,7 +315,7 @@ public class SpringController {
         //User情報を取得、表示されている月を決める、どの学習データを削除するかを決める
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
-        LocalDate studyMonth = LocalDate.parse(monthString);
+        LocalDate studyMonth = LocalDate.parse(monthString + "-01");
 
         LearningData data = learningDataRepository.findById(learningDataId).orElse(null);
 
@@ -361,28 +341,39 @@ public class SpringController {
 
 
         //skillEdit.htmlの表示に必要なデータを再度モデルに渡す。
+        setSkillEditModelAttributes(model, user, studyMonth);
 
+        return "skillEdit";
+
+    }
+
+
+    // skillEditに渡すモデルの属性をセットする共通メソッド(GETとPOSTで重複する処理をまとめる)
+    private void setSkillEditModelAttributes(Model model, User user, LocalDate displayMonth) {
 
             //プルダウンのリストを作成(今の月、今の月マイナスひと月、マイナスふた月)
-            List<LocalDate> monthList = new ArrayList<>();
+            List<String> monthList = new ArrayList<>();
+
             for (int i = 0 ; i < 3 ; i ++ ) {
-                monthList.add(LocalDate.now().minusMonths(i));
+
+                //フォーマットを"yyyy-MM"にしてリストに追加
+                monthList.add(LocalDate.now().minusMonths(i).format(DateTimeFormatter.ofPattern("yyyy-MM"))); 
+
             }
 
             //カテゴリー一覧を取得
             List<Category> categories = categoryRepository.findAll();
 
             //取得したユーザーと表示する月をもとに学習データを取得、テーブル内の行はIDの昇順で固定
-            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, studyMonth);
+            List<LearningData> learningDataList = learningDataRepository.findByUserAndStudyMonthOrderByIdAsc(user, displayMonth);
 
             model.addAttribute("categories", categories);
             model.addAttribute("monthList", monthList);
-            model.addAttribute("displayMonth", studyMonth);
+            model.addAttribute("displayMonth", displayMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"))); //displayMonthを"yyyy-MM"のStringに変換してHTMLに渡す
             model.addAttribute("user", user);
             model.addAttribute("learningDataList", learningDataList);
 
-        return "skillEdit";
-
     }
+
 
 }
