@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="/css/topLoggedIn.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </head>
 <body>
     <header>
@@ -34,11 +35,16 @@
             </div>
         </div>
         <div class="wrapper-chart">
+
             <h2>学習チャート</h2>
+
             <a th:href= "@{/skill/edit}" class="btn editskill-btn">編集する</a>
+
+            <h6 class="chart-title">Chart.js Bar Chart</h6>
+
             <div class="chart-container">
 
-                <canvas id="chart"></canvas>
+                <canvas id="chart" class="chart"></canvas>
 
             </div>
         </div>
@@ -49,17 +55,60 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js">
+    <script type="text/javascript" th:inline="javascript">
 
-        let ctx = document.getElementById('chart');
-        let chart = {
+        let backendData = /*[[${backendData}]]*/ [];
+        let frontendData = /*[[${frontendData}]]*/ [];
+        let infraData = /*[[${infraData}]]*/ [];
+
+        let ctx = document.getElementById('chart').getContext('2d');
+        let chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['先々月', '先月', '今月'],
-                datasets: []
-        }
+                datasets: [ {
+                    label: 'バックエンド',
+                    data: backendData,
+                    backgroundColor: 'rgba(243,181,194, 0.7)',
+                    borderWidth: 0,
+                    maxBarThickness: 60,
+                    categoryPercentage: 0.7,
+                    barPercentage: 0.8
+                }, {
+                    label: 'フロントエンド',
+                    data: frontendData,
+                    backgroundColor: 'rgba(247, 209, 170, 0.7)',
+                    borderWidth: 0,
+                    maxBarThickness: 60,
+                    categoryPercentage: 0.7,
+                    barPercentage: 0.8
+                }, {
+                    label: 'インフラ',
+                    data: infraData,
+                    backgroundColor: 'rgba(250, 230, 181, 0.7)',
+                    borderWidth: 0,
+                    maxBarThickness: 60,
+                    categoryPercentage: 0.7,
+                    barPercentage: 0.8
+                }
 
-    };
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 100,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                },
+            },
+
+
+    });
     
     </script>
 </body>
