@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 /* import jakarta.persistence.Lob; */
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
+/* import jakarta.validation.constraints.Email; */
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -39,7 +39,7 @@ private String email;
 
 @Column(length = 255, nullable = false)
 @NotBlank(message = "パスワードは必ず入力してください")
-@Pattern(regexp="^[a-zA-Z0-9]{8,}$", message = "英数字8文字以上で入力してください")
+@Pattern(regexp="^(?=.*?[a-zA-Z])(?=.*?\\d)[a-zA-Z\\d]{8,}+$", message = "英数字8文字以上で入力してください")
 private String password;
 
 @Column(length = 255, nullable = true)
