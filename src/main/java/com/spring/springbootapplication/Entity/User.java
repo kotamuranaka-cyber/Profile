@@ -33,7 +33,7 @@ private long id;
 private String name;
 
 @Column(length = 100, nullable = false)
-@Email(message = "メールアドレスが正しい形式ではありません")
+@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "メールアドレスが正しい形式ではありません")
 @NotBlank(message = "メールアドレスは必ず入力してください")
 private String email;
 
