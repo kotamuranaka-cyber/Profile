@@ -13,11 +13,11 @@ import java.util.List;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+/* import org.springframework.context.annotation.Configuration; */
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 //テストデータを作成する
-@Configuration
+/* @Configuration 本番時は無効化*/
 public class TestDataLoader {
 
     //ApplicationRunnerは、アプリを起動した際に一度だけ実行される
