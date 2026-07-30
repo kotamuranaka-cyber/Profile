@@ -200,11 +200,14 @@ public class SpringController {
         Model model) throws IOException {
         
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
-        if (introduction == null || introduction.length() < 50 || introduction.length() > 200) {
+
+        //自己紹介がnullまたは空欄ではない(未入力での保存を許可)、または50文字以上200文字以下でない場合はエラーを表示して元のページに戻る
+        if (introduction != null && !introduction.isEmpty() && (introduction.length() < 50 || introduction.length() > 200)) {
             model.addAttribute("errorMessage", "自己紹介は50文字以上200文字以下で入力してください");
             model.addAttribute("user", user);
             return "profileEdit";
         }
+        
         user.setIntroduction(introduction);
 
         if(avatarImage != null && !avatarImage.isEmpty()) {
