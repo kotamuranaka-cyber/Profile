@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     //メールアドレスでユーザーを検索する
     Optional<User> findByEmail(String email);
+
+    //メールアドレスが既に存在するか確認する
+    boolean existsByEmail(String email);
 }

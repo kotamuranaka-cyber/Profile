@@ -9,7 +9,7 @@ services:
       - 5050:5050
     tty: true
     volumes:
-      - ./:/app
+      - ./src:/app/src
     depends_on:
       - db
 
