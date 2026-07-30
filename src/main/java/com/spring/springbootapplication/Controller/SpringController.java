@@ -69,6 +69,12 @@ public class SpringController {
         if (result.hasErrors()) {
             return "register";
         }
+        
+        // メールアドレスが既に存在する場合はエラーメッセージを表示して元のページに戻る
+        if (userRepository.existsByEmail(user.getEmail())) {
+            model.addAttribute("errorMessage", "このメールアドレスは既に登録されています");
+            return "register";
+        }
 
         // パスワードハッシュ化をConfigから呼び出す
         String hashedPassword = securityConfig.passwordEncoder().encode(user.getPassword());
