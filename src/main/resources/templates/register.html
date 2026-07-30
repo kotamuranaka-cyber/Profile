@@ -25,7 +25,8 @@
             <div class="form-group">
                 <label for="email" class="form-label">メールアドレス</label>
                 <input type="text" th:field="*{email}">
-                <p th:errors="*{email}" class="error-message"></p>
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p>
+                <p th:if="${emailDuplicateError}" th:text="${emailDuplicateError}" class="error-message"></p>
             </div>
             <div class="form-group">
                 <label for="password" class="form-label">パスワード</label>

@@ -65,14 +65,14 @@ public class SpringController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("userModel") @Valid User user, BindingResult result, Model model) {
 
-        // 入力エラーがある場合は元のページに戻る
-        if (result.hasErrors()) {
-            return "register";
-        }
-        
         // メールアドレスが既に存在する場合はエラーメッセージを表示して元のページに戻る
         if (userRepository.existsByEmail(user.getEmail())) {
-            model.addAttribute("errorMessage", "このメールアドレスは既に登録されています");
+            model.addAttribute("emailDuplicateError", "このメールアドレスは既に登録されています");
+            return "register";
+        }
+
+        // 入力エラーがある場合は元のページに戻る
+        if (result.hasErrors()) {
             return "register";
         }
 
