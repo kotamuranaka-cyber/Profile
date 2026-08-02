@@ -30,6 +30,11 @@ header{
     font-weight: bold;
 }
 
+.logo a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .login-btn {
     background-color: white;
     border-radius: 4px;

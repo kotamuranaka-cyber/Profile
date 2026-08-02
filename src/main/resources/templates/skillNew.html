@@ -12,7 +12,9 @@
 
      <header>
         <div class="header-container">
-            <h1 class="logo">My Portfolio</h1>
+            <h1 class="logo">
+                <a th:href="@{/topLoggedIn}">My Portfolio</a>
+            </h1>
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btn logout-btn">ログアウト</button>
             </form>
