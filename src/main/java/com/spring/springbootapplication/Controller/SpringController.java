@@ -197,17 +197,21 @@ public class SpringController {
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails, 
         @RequestParam("introduction") String introduction, 
         @RequestParam("avatarImage") MultipartFile avatarImage, 
-        Model model, RedirectAttributes redirectAttributes) throws IOException {
+        Model model) throws IOException {
         
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
         //自己紹介がnullまたは空欄ではない(未入力での保存を許可)、または50文字以上200文字以下でない場合はエラーを表示して元のページに戻る
         if (introduction != null && !introduction.isEmpty() && (introduction.length() < 50 || introduction.length() > 200)) {
             model.addAttribute("errorMessage", "自己紹介は50文字以上200文字以下で入力してください");
+
+            //入力した自己紹介を保持するために、userオブジェクトのintroductionを更新する(DBには保存しない)
+            if (user != null) {
+                user.setIntroduction(introduction);
+            }
             model.addAttribute("user", user);
-            //入力した自己紹介を保持するために、リダイレクト時にフラッシュ属性として渡す
-            redirectAttributes.addFlashAttribute("inputIntroduction", introduction);
-            return "redirect:/profile/edit";
+
+            return "profileEdit";
         }
         
         user.setIntroduction(introduction);
@@ -216,7 +220,7 @@ public class SpringController {
             user.setAvatarImage(avatarImage.getBytes());
         }
         userRepository.saveAndFlush(user);
-        return "redirect:/topLoggedIn";
+        return "topLoggedIn";
     }
 
     //学習時間一覧ページ
