@@ -3,6 +3,8 @@
 body {
     font-family: 'Roboto', sans-serif;
     color:rgba(0, 0, 0, 0.75);
+    margin: 0;
+    padding: 0;
 }
 
 .btn:hover {
