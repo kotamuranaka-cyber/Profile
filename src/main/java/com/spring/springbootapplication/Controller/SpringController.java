@@ -197,7 +197,7 @@ public class SpringController {
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails, 
         @RequestParam("introduction") String introduction, 
         @RequestParam("avatarImage") MultipartFile avatarImage, 
-        Model model) throws IOException {
+        Model model, RedirectAttributes redirectAttributes) throws IOException {
         
         User user = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
 
@@ -205,7 +205,9 @@ public class SpringController {
         if (introduction != null && !introduction.isEmpty() && (introduction.length() < 50 || introduction.length() > 200)) {
             model.addAttribute("errorMessage", "自己紹介は50文字以上200文字以下で入力してください");
             model.addAttribute("user", user);
-            return "profileEdit";
+            //入力した自己紹介を保持するために、リダイレクト時にフラッシュ属性として渡す
+            redirectAttributes.addFlashAttribute("inputIntroduction", introduction);
+            return "redirect:/profile/edit";
         }
         
         user.setIntroduction(introduction);
