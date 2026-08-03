@@ -229,7 +229,7 @@ public class SpringController {
             user.setAvatarImage(avatarImage.getBytes());
         }
         userRepository.saveAndFlush(user);
-        return "topLoggedIn";
+        return "redirect:/topLoggedIn";
     }
 
     //学習時間一覧ページ
