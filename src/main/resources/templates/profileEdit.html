@@ -22,12 +22,12 @@
         <h2 class="edit-title">自己紹介を編集する</h2>
 
         <!-- 画像を送るために、enctype="multipart/form-data" を必ず記述する -->
-        <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/profile/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
 
 
             <div class="form-group form-introduction">
                 <label for="introduction" class="form-label">自己紹介文</label>
-                <textarea id="introduction" name="introduction" th:text="${user.introduction}" class="introduction-textarea"></textarea>
+                <textarea id="introduction" name="introduction" th:text="${user.introduction}" th:field="*{introduction}" class="introduction-textarea"></textarea>
                 <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
             </div>
 
