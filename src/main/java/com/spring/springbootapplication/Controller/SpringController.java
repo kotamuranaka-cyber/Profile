@@ -205,11 +205,20 @@ public class SpringController {
         if (introduction != null && !introduction.isEmpty() && (introduction.length() < 50 || introduction.length() > 200)) {
             model.addAttribute("errorMessage", "自己紹介は50文字以上200文字以下で入力してください");
 
-            //入力した自己紹介を保持するために、userオブジェクトのintroductionを更新する(DBには保存しない)
+            //入力した自己紹介を保持するために、displayuserオブジェクトを作成する(DBには保存しない)
+            User displayuser = new User();
+
+            //ユーザー情報を取得して、displayuserにセットする
             if (user != null) {
-                user.setIntroduction(introduction);
+                displayuser.setName(user.getName());
+                displayuser.setEmail(user.getEmail());
+                displayuser.setAvatarImage(user.getAvatarImage());
             }
-            model.addAttribute("user", user);
+
+            //入力した自己紹介をdisplayuserにセットする
+            displayuser.setIntroduction(introduction);
+
+            model.addAttribute("user", displayuser);
 
             return "profileEdit";
         }
